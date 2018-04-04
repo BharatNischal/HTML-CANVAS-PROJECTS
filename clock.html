@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <head> <meta http-equiv="refresh" content="1" /> </head>
+    <title></title>
+    <style media="screen">
+    body{
+      margin: 0px;
+      padding: 0px;
+      background-color: #9c27b0;
+    }
+     canvas{
+        transform: translate(50%,30%);
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="400" height="400"></canvas>
+
+    <script>
+
+
+      var c = document.getElementById("canvas");
+      var ctx = c.getContext("2d");
+      var center= canvas.height/2;
+      ctx.translate(center,center);
+      drawClock(ctx,center);
+      drawnumber(ctx,center);
+      setInterval(timer(ctx,center),1000);
+
+
+      function drawClock(ctx,radius){
+        ctx.beginPath();
+        ctx.arc(0,0,radius,0,2*Math.PI);
+        ctx.fillStyle="black";
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(0,0,radius*0.1,0,2*Math.PI);
+        ctx.fillStyle="white";
+        ctx.fill();
+        ctx.closePath();
+
+
+      }
+      function drawnumber(ctx,radius){
+        for (var i = 1; i <13; i++) {
+          var angle = i*Math.PI/6 -Math.PI/2;
+          ctx.font="20px sans-serif";
+          ctx.fillStyle="white";
+          ctx.fillText(i.toString(),radius*Math.cos(angle)*0.9,radius*Math.sin(angle)*0.9);
+        }}
+        function timer(ctx,radius){
+          var time = new Date();
+          console.log(time);
+          var hours = time.getHours();
+          var mins = time.getMinutes();
+          var secs = time.getSeconds();
+          hours = hours%12;
+          var angleH = hours*Math.PI/6+mins*Math.PI/360+secs*Math.PI/(360*60);
+          drawHand(ctx,radius*0.4,radius*0.05,angleH);
+          var angleM= mins*Math.PI/30+secs*Math.PI/1800;
+          drawHand(ctx,radius*0.7,radius*0.05,angleM);
+          var angleS= secs*Math.PI/30;
+          drawHand(ctx,radius*0.8,radius*0.02,angleS);
+
+        }
+
+          function drawHand(ctx,length,width,ang){
+            var ang1=ang-Math.PI/2;
+            ctx.beginPath();
+            ctx.lineWidth=width;
+            ctx.strokeStyle="white";
+            ctx.lineCap = "round";
+            ctx.moveTo(0,0);
+            ctx.lineTo(length*Math.cos(ang1),length*Math.sin(ang1));
+            ctx.stroke();
+            ctx.closePath();
+          }
+    </script>
+  </body>
+</html>
